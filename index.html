@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutrióloga Diane Pérez | Especialista en Lactancia Materna y Nutrición</title>
+    <!-- Tailwind CSS CDN for styling & layout flexibility alongside custom Bootstrap 6 design tokens -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for professional medical & social icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Plus Jakarta Sans & Playfair Display for warm, maternal elegance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        petal: '#eac2d3',
+                        petalLight: '#f7ebf1',
+                        berry: '#98526a',
+                        berryLight: '#b86c87',
+                        wine: '#4b1d30',
+                        plum: '#210d18',
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #faf5f7;
+            color: #210d18;
+        }
+        h1, h2, h3, h4, .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        /* Custom smooth pulse animation for CTA buttons */
+        @keyframes softPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+        .animate-soft-pulse {
+            animation: softPulse 3s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-[#faf5f7] text-[#210d18] antialiased selection:bg-[#eac2d3] selection:text-[#4b1d30]">
+
+    <!-- Notification Toast / Modal Helper -->
+    <div id="custom-toast" class="fixed bottom-5 right-5 z-50 transform translate-y-32 opacity-0 transition-all duration-300 bg-[#4b1d30] text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 border border-[#98526a]/30">
+        <i class="fa-solid fa-circle-check text-[#eac2d3] text-xl"></i>
+        <div>
+            <h5 class="font-semibold text-sm">Nutrióloga DPH</h5>
+            <p id="toast-message" class="text-xs text-[#eac2d3]">¡Acción realizada con éxito!</p>
+        </div>
+    </div>
+
+    <!-- 1. Barra de Navegación Fija -->
+    <header class="fixed top-0 left-0 right-0 z-40 bg-[#faf5f7]/90 backdrop-blur-md border-b border-[#eac2d3]/50 transition-all duration-300 shadow-sm" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Logotipo -->
+            <a href="#inicio" class="flex items-center gap-3 group">
+                <div class="w-11 h-11 rounded-full bg-[#4b1d30] flex items-center justify-center text-[#eac2d3] font-serif font-bold text-xl shadow-md group-hover:bg-[#98526a] transition-colors">
+                    D
+                </div>
+                <div>
+                    <span class="font-serif font-bold text-xl text-[#4b1d30] tracking-wide block leading-none">Diane Pérez</span>
+                    <span class="text-xs font-semibold text-[#98526a] tracking-widest uppercase mt-1 block">Nutrióloga DPH · Lactancia</span>
+                </div>
+            </a>
+
+            <!-- Enlaces de navegación desktop -->
+            <nav class="hidden md:flex items-center gap-8 font-medium text-sm text-[#4b1d30]">
+                <a href="#inicio" class="hover:text-[#98526a] transition-colors">Inicio</a>
+                <a href="#especialidad" class="hover:text-[#98526a] transition-colors">Especialidad</a>
+                <a href="#servicios" class="hover:text-[#98526a] transition-colors">Servicios</a>
+                <a href="#beneficios" class="hover:text-[#98526a] transition-colors">Beneficios</a>
+                <a href="#redes" class="hover:text-[#98526a] transition-colors">Enlaces</a>
+            </nav>
+
+            <!-- CTA Cita -->
+            <div class="hidden md:flex items-center gap-3">
+                <a href="#contacto" onclick="openContactModal('Cita General')" class="bg-[#4b1d30] hover:bg-[#98526a] text-white px-5 py-2.5 rounded-full text-sm font-semibold shadow-md transition-all transform hover:-translate-y-0.5">
+                    <i class="fa-solid fa-calendar-check mr-2 text-[#eac2d3]"></i> Agendar Cita
+                </a>
+            </div>
+
+            <!-- Botón menú móvil -->
+            <button onclick="toggleMobileMenu()" class="md:hidden text-[#4b1d30] focus:outline-none p-2 rounded-lg hover:bg-[#eac2d3]/30 transition-colors">
+                <i id="mobile-menu-icon" class="fa-solid fa-bars text-2xl"></i>
+            </button>
+        </div>
+
+        <!-- Menú Móvil desplegable -->
+        <div id="mobile-menu" class="hidden md:hidden bg-[#faf5f7] border-b border-[#eac2d3] px-6 py-6 space-y-4 shadow-xl">
+            <a href="#inicio" onclick="toggleMobileMenu()" class="block font-medium text-[#4b1d30] hover:text-[#98526a]">Inicio</a>
+            <a href="#especialidad" onclick="toggleMobileMenu()" class="block font-medium text-[#4b1d30] hover:text-[#98526a]">Especialidad</a>
+            <a href="#servicios" onclick="toggleMobileMenu()" class="block font-medium text-[#4b1d30] hover:text-[#98526a]">Servicios</a>
+            <a href="#beneficios" onclick="toggleMobileMenu()" class="block font-medium text-[#4b1d30] hover:text-[#98526a]">Beneficios</a>
+            <a href="#redes" onclick="toggleMobileMenu()" class="block font-medium text-[#4b1d30] hover:text-[#98526a]">Enlaces & Linktree</a>
+            <div class="pt-4 border-t border-[#eac2d3]">
+                <a href="#contacto" onclick="toggleMobileMenu(); openContactModal('Cita General');" class="block text-center bg-[#4b1d30] text-white py-3 rounded-full font-semibold shadow-md">
+                    <i class="fa-solid fa-calendar-check mr-2"></i> Agendar Cita
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. Hero Section -->
+    <section id="inicio" class="pt-32 pb-20 md:pt-40 md:pb-32 bg-gradient-to-b from-[#eac2d3]/30 via-[#faf5f7] to-[#faf5f7] relative overflow-hidden">
+        <!-- Elementos decorativos suaves de fondo -->
+        <div class="absolute top-10 left-[-10%] w-96 h-96 rounded-full bg-[#eac2d3]/40 blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-10 right-[-10%] w-96 h-96 rounded-full bg-[#98526a]/10 blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Contenido de Texto Hero -->
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 bg-[#eac2d3]/60 text-[#4b1d30] px-4 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase border border-[#98526a]/20">
+                        <i class="fa-solid fa-heart-pulse text-[#98526a]"></i> Especialista en Lactancia Materna y Nutrición
+                    </div>
+                    
+                    <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl text-[#4b1d30] font-bold leading-tight">
+                        Nutrición con amor y ciencia para la <span class="italic text-[#98526a]">lactancia y la infancia</span>
+                    </h1>
+                    
+                    <p class="text-lg text-[#210d18]/80 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
+                        Acompañamos a mamá y bebé en cada etapa dorada. Asesorías profesionales en lactancia materna, creación de bancos de leche y nutrición clínica especializada sin mitos ni restricciones extremas.
+                    </p>
+
+                    <!-- Botones CTA -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                        <a href="https://wa.me/523321923974?text=Hola%20Nutrióloga%20Diane,%20me%20gustaría%20agendar%20una%20asesoría%20en%20lactancia." target="_blank" class="w-full sm:w-auto bg-[#4b1d30] hover:bg-[#98526a] text-white px-8 py-4 rounded-full font-semibold shadow-lg transition-all transform hover:-translate-y-1 flex items-center justify-center gap-3 animate-soft-pulse">
+                            <i class="fa-brands fa-whatsapp text-xl text-[#eac2d3]"></i> Agendar por WhatsApp
+                        </a>
+                        <a href="#servicios" class="w-full sm:w-auto bg-white hover:bg-[#eac2d3]/30 text-[#4b1d30] border-2 border-[#eac2d3] px-8 py-3.5 rounded-full font-semibold transition-all flex items-center justify-center gap-2">
+                            <span>Ver Servicios</span>
+                            <i class="fa-solid fa-arrow-down text-sm"></i>
+                        </a>
+                    </div>
+
+                    <!-- Métricas de confianza -->
+                    <div class="pt-8 grid grid-cols-3 gap-4 border-t border-[#eac2d3]/60 max-w-lg mx-auto lg:mx-0">
+                        <div>
+                            <p class="font-serif text-2xl font-bold text-[#4b1d30]">+500</p>
+                            <p class="text-xs text-[#98526a] font-medium uppercase tracking-wider">Mamás Asesoradas</p>
+                        </div>
+                        <div>
+                            <p class="font-serif text-2xl font-bold text-[#4b1d30]">100%</p>
+                            <p class="text-xs text-[#98526a] font-medium uppercase tracking-wider">Evidencia Científica</p>
+                        </div>
+                        <div>
+                            <p class="font-serif text-2xl font-bold text-[#4b1d30]">Empático</p>
+                            <p class="text-xs text-[#98526a] font-medium uppercase tracking-wider">Acompañamiento</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Imagen / Ilustración Destacada -->
+                <div class="lg:col-span-5 flex justify-center">
+                    <div class="relative w-full max-w-md">
+                        <!-- Marco decorativo de color -->
+                        <div class="absolute inset-0 bg-gradient-to-tr from-[#98526a] to-[#eac2d3] rounded-[2.5rem] transform rotate-3 shadow-xl"></div>
+                        
+                        <!-- Contenedor de la imagen -->
+                        <div class="relative bg-white p-4 rounded-[2.5rem] shadow-2xl border border-[#eac2d3]/50">
+                            <img src="img/DP2.jpeg" alt="Nutrióloga Diane Pérez - Lactancia Materna" class="w-full h-[420px] sm:h-[480px] object-cover rounded-2xl shadow-inner">
+                            
+                            <!-- Insignia flotante -->
+                            <div class="absolute -bottom-6 -left-6 bg-white py-3 px-5 rounded-2xl shadow-xl border border-[#eac2d3] flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-[#eac2d3] flex items-center justify-center text-[#4b1d30]">
+                                    <i class="fa-solid fa-award text-lg"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-[#98526a] font-semibold">Certificada en</p>
+                                    <p class="text-sm font-bold text-[#4b1d30]">Lactancia Materna</p>
+                                    <p class="text-xs text-[#98526a] font-semibold">Experiencia en</p>
+                                    <p class="text-sm font-bold text-[#4b1d30]">Nutrición, durante el embarazo y</p>
+                                    <p class="text-sm font-bold text-[#4b1d30]">postparto</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Sección Sobre la Especialista -->
+    <section id="especialidad" class="py-24 bg-white relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Foto profesional lateral -->
+                <div class="lg:col-span-5">
+                    <div class="relative">
+                        <div class="absolute -inset-2 bg-[#eac2d3] rounded-3xl transform -rotate-2"></div>
+                        <img src="img/DP3.jpeg" alt="Diane Pérez Nutrióloga" class="relative rounded-2xl shadow-xl w-full h-[450px] object-cover">
+                    </div>
+                </div>
+
+                <!-- Texto descriptivo -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="inline-flex items-center gap-2 text-[#98526a] font-semibold text-sm uppercase tracking-wider">
+                        <i class="fa-solid fa-seedling"></i> Conoce a tu especialista
+                    </div>
+                    
+                    <h2 class="font-serif text-3xl sm:text-4xl text-[#4b1d30] font-bold leading-tight">
+                        Mi misión es proteger y disfrutar el vínculo de la lactancia contigo
+                    </h2>
+                    
+                    <p class="text-[#210d18]/80 leading-relaxed text-base">
+                        Hola, soy la <strong>Nutrióloga Diane Pérez (Nutrióloga DPH)</strong>. Como especialista en lactancia materna y nutrición materno-infantil, entiendo perfectamente los retos, dudas y miedos que surgen desde el embarazo hasta los primeros años de vida de tu pequeño.
+                    </p>
+
+                    <p class="text-[#210d18]/80 leading-relaxed text-base">
+                        Mi enfoque combina la evidencia científica más actualizada con un trato cálido, humano y libre de juicios. No estás sola en este camino: juntas lograremos una lactancia exitosa y una alimentación complementaria sin estrés.
+                    </p>
+
+                    <!-- Puntos clave del enfoque -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+                        <div class="flex items-start gap-3 bg-[#faf5f7] p-4 rounded-2xl border border-[#eac2d3]/50">
+                            <div class="w-8 h-8 rounded-full bg-[#4b1d30] text-[#eac2d3] flex items-center justify-center shrink-0 mt-0.5">
+                                <i class="fa-solid fa-check text-xs"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm text-[#4b1d30]">Asesoría de lactancia Materna</h4>
+                                <p class="text-xs text-[#210d18]/70 mt-1">Técnicas de agarre correcto y prevención de grietas.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3 bg-[#faf5f7] p-4 rounded-2xl border border-[#eac2d3]/50">
+                            <div class="w-8 h-8 rounded-full bg-[#4b1d30] text-[#eac2d3] flex items-center justify-center shrink-0 mt-0.5">
+                                <i class="fa-solid fa-check text-xs"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm text-[#4b1d30]">Nutrición Clinica</h4>
+                                <p class="text-xs text-[#210d18]/70 mt-1">Alimentación consiente y adecuada para tu estilo de vida.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-2">
+                        <a href="#contacto" onclick="openContactModal('Consulta de Valoración')" class="inline-flex items-center gap-2 text-[#4b1d30] font-bold hover:text-[#98526a] transition-colors">
+                            <span>Conoce más sobre mis consultas</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Sección de Servicios Clave -->
+    <section id="servicios" class="py-24 bg-[#faf5f7] relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                <span class="text-[#98526a] font-bold text-xs uppercase tracking-widest bg-[#eac2d3]/40 px-3 py-1 rounded-full border border-[#98526a]/20">Especialidades DPH</span>
+                <h2 class="font-serif text-3xl sm:text-4xl text-[#4b1d30] font-bold">Servicios Diseñados para Ti y tu Bebé</h2>
+                <p class="text-[#210d18]/80 text-base">Atención personalizada presencial y en línea para acompañar cada fase de la maternidad.</p>
+            </div>
+
+            <!-- Grid de servicios -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                
+                <!-- Servicio 1 -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 border border-[#eac2d3]/60 flex flex-col justify-between group hover:-translate-y-1">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-[#eac2d3]/50 text-[#4b1d30] flex items-center justify-center text-2xl mb-6 group-hover:bg-[#4b1d30] group-hover:text-[#eac2d3] transition-colors">
+                            <i class="fa-solid fa-baby"></i>
+                        </div>
+                        <h3 class="font-serif text-xl font-bold text-[#4b1d30] mb-3">Asesoría en Lactancia Materna</h3>
+                        <p class="text-sm text-[#210d18]/70 leading-relaxed mb-6">
+                            Corrección de agarre, posturas, manejo de baja producción, crisis de lactancia y prevención de mastitis.
+                        </p>
+                    </div>
+                    <button onclick="openContactModal('Asesoría en Lactancia Materna')" class="w-full bg-[#faf5f7] hover:bg-[#4b1d30] hover:text-white text-[#4b1d30] font-semibold py-3 rounded-xl text-sm transition-all border border-[#eac2d3]">
+                        Solicitar Servicio
+                    </button>
+                </div>
+
+                <!-- Servicio 2 -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 border border-[#eac2d3]/60 flex flex-col justify-between group hover:-translate-y-1">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-[#eac2d3]/50 text-[#4b1d30] flex items-center justify-center text-2xl mb-6 group-hover:bg-[#4b1d30] group-hover:text-[#eac2d3] transition-colors">
+                            <i class="fa-solid fa-bottle-droplet"></i>
+                        </div>
+                        <h3 class="font-serif text-xl font-bold text-[#4b1d30] mb-3">Banco de Leche en Casa</h3>
+                        <p class="text-sm text-[#210d18]/70 leading-relaxed mb-6">
+                            Guía completa sobre extracción, tiempos de almacenamiento seguro, descongelación y transición al regreso a laboral.
+                        </p>
+                    </div>
+                    <button onclick="openContactModal('Banco de Leche en Casa')" class="w-full bg-[#faf5f7] hover:bg-[#4b1d30] hover:text-white text-[#4b1d30] font-semibold py-3 rounded-xl text-sm transition-all border border-[#eac2d3]">
+                        Solicitar Servicio
+                    </button>
+                </div>
+
+                <!-- Servicio 3 -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 border border-[#eac2d3]/60 flex flex-col justify-between group hover:-translate-y-1">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-[#eac2d3]/50 text-[#4b1d30] flex items-center justify-center text-2xl mb-6 group-hover:bg-[#4b1d30] group-hover:text-[#eac2d3] transition-colors">
+                            <i class="fa-solid fa-bowl-food"></i>
+                        </div>
+                        <h3 class="font-serif text-xl font-bold text-[#4b1d30] mb-3">Alimentación Complementaria</h3>
+                        <p class="text-sm text-[#210d18]/70 leading-relaxed mb-6">
+                            Método BLW, papillas, introducción segura de alérgenos y cómo combinar la leche materna con sólidos a partir de los 6 meses.
+                        </p>
+                    </div>
+                    <button onclick="openContactModal('Alimentación Complementaria')" class="w-full bg-[#faf5f7] hover:bg-[#4b1d30] hover:text-white text-[#4b1d30] font-semibold py-3 rounded-xl text-sm transition-all border border-[#eac2d3]">
+                        Solicitar Servicio
+                    </button>
+                </div>
+
+                <!-- Servicio 4 -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 border border-[#eac2d3]/60 flex flex-col justify-between group hover:-translate-y-1">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-[#eac2d3]/50 text-[#4b1d30] flex items-center justify-center text-2xl mb-6 group-hover:bg-[#4b1d30] group-hover:text-[#eac2d3] transition-colors">
+                            <i class="fa-solid fa-person-pregnant"></i>
+                        </div>
+                        <h3 class="font-serif text-xl font-bold text-[#4b1d30] mb-3">Nutrición en Embarazo y Lactancia</h3>
+                        <p class="text-sm text-[#210d18]/70 leading-relaxed mb-6">
+                            Planes de alimentación personalizados para nutrirte adecuadamente durante la gestación y recuperar tu energía postparto.
+                        </p>
+                    </div>
+                    <button onclick="openContactModal('Nutrición en Embarazo y Lactancia')" class="w-full bg-[#faf5f7] hover:bg-[#4b1d30] hover:text-white text-[#4b1d30] font-semibold py-3 rounded-xl text-sm transition-all border border-[#eac2d3]">
+                        Solicitar Servicio
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Beneficios / Por qué elegir a la Nutrióloga DPH -->
+    <section id="beneficios" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <span class="text-[#98526a] font-bold text-xs uppercase tracking-widest bg-[#eac2d3]/40 px-3 py-1 rounded-full border border-[#98526a]/20">Tu mejor opción</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl text-[#4b1d30] font-bold">¿Por qué confiar tu lactancia y nutrición a Diane Pérez?</h2>
+                    <p class="text-[#210d18]/80 leading-relaxed">
+                        Cada mamá y cada bebé son únicos. No existen recetas mágicas universales, sino un plan adaptado a tu estilo de vida, tus horarios y tus necesidades emocionales y físicas.
+                    </p>
+
+                    <div class="space-y-4 pt-2">
+                        <div class="flex items-start gap-4 p-4 rounded-2xl bg-[#faf5f7] border border-[#eac2d3]/50">
+                            <div class="w-10 h-10 rounded-xl bg-[#4b1d30] text-[#eac2d3] flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-shield-heart"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-base text-[#4b1d30]">Empatía y Calidez Humana</h4>
+                                <p class="text-xs text-[#210d18]/70 mt-1">Un espacio seguro donde resolver tus dudas sin juicios ni presiones externas.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4 p-4 rounded-2xl bg-[#faf5f7] border border-[#eac2d3]/50">
+                            <div class="w-10 h-10 rounded-xl bg-[#4b1d30] text-[#eac2d3] flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-clock"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-base text-[#4b1d30]">Seguimiento Continuo</h4>
+                                <p class="text-xs text-[#210d18]/70 mt-1">Acompañamiento vía WhatsApp para resolver dudas urgentes entre consultas.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4 p-4 rounded-2xl bg-[#faf5f7] border border-[#eac2d3]/50">
+                            <div class="w-10 h-10 rounded-xl bg-[#4b1d30] text-[#eac2d3] flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-graduation-cap"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-base text-[#4b1d30]">Actualización Constante</h4>
+                                <p class="text-xs text-[#210d18]/70 mt-1">Protocolos basados en OMS, UNICEF y asociaciones internacionales de lactancia.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Imagen decorativa de beneficios -->
+                <div class="relative">
+                    <div class="absolute inset-0 bg-[#eac2d3] rounded-3xl transform rotate-3"></div>
+                    <div class="relative bg-[#4b1d30] p-8 sm:p-12 rounded-3xl text-white shadow-2xl space-y-6">
+                        <span class="text-[#eac2d3] text-xs font-bold uppercase tracking-widest bg-[#98526a]/40 px-3 py-1 rounded-full">Testimonio Destacado</span>
+                        <blockquote class="font-serif text-xl sm:text-2xl italic text-[#f7ebf1] leading-relaxed">
+                            "Gracias a la asesoría de Diane pude superar el dolor en el agarre y establecer mi banco de leche antes de regresar a trabajar. ¡Su paciencia cambió nuestra lactancia por completo!"
+                        </blockquote>
+                        <div class="flex items-center gap-4 pt-4 border-t border-[#98526a]">
+                            <div class="w-12 h-12 rounded-full bg-[#eac2d3] text-[#4b1d30] flex items-center justify-center font-bold text-lg font-serif">
+                                M
+                            </div>
+                            <div>
+                                <h5 class="font-bold text-base">Mariana G. & Santiago</h5>
+                                <p class="text-xs text-[#eac2d3]">Mamá primeriza · Asesoría de Lactancia</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Sección Linktree & Redes Sociales Interactivas -->
+    <section id="redes" class="py-24 bg-gradient-to-b from-[#faf5f7] to-[#eac2d3]/30 relative">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            
+            <div class="w-16 h-16 rounded-full bg-[#4b1d30] text-[#eac2d3] flex items-center justify-center text-2xl mx-auto mb-6 shadow-xl">
+                <i class="fa-solid fa-link"></i>
+            </div>
+
+            <h2 class="font-serif text-3xl sm:text-4xl text-[#4b1d30] font-bold mb-3">Enlaces Oficiales & Redes Sociales</h2>
+            <p class="text-[#210d18]/80 text-base max-w-xl mx-auto mb-10">
+                Accede directamente a todas mis plataformas, agenda tu cita o explora mis recursos gratuitos inspirados en mi Linktree oficial.
+            </p>
+
+            <!-- Botones tipo Linktree con diseño elegante -->
+            <div class="space-y-4 max-w-xl mx-auto">
+                
+                <!-- WhatsApp Directo -->
+                <a href="https://wa.me/523321923974?text=Hola%20Nutrióloga%20Diane,%20vengo%20de%20su%20sitio%20web%20y%20deseo%20información." target="_blank" class="flex items-center justify-between p-4 px-6 bg-white hover:bg-[#4b1d30] hover:text-white text-[#4b1d30] rounded-2xl shadow-md border border-[#eac2d3] transition-all group duration-300 transform hover:scale-[1.02]">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-[#eac2d3]/50 group-hover:bg-[#98526a] flex items-center justify-center text-xl transition-colors">
+                            <i class="fa-brands fa-whatsapp text-[#4b1d30] group-hover:text-white"></i>
+                        </div>
+                        <span class="font-bold text-base">Agendar Cita por WhatsApp</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-sm text-[#98526a] group-hover:text-[#eac2d3]"></i>
+                </a>
+
+                <!-- Instagram -->
+                <a href="https://instagram.com" target="_blank" class="flex items-center justify-between p-4 px-6 bg-white hover:bg-[#4b1d30] hover:text-white text-[#4b1d30] rounded-2xl shadow-md border border-[#eac2d3] transition-all group duration-300 transform hover:scale-[1.02]">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-[#eac2d3]/50 group-hover:bg-[#98526a] flex items-center justify-center text-xl transition-colors">
+                            <i class="fa-brands fa-instagram text-[#4b1d30] group-hover:text-white"></i>
+                        </div>
+                        <span class="font-bold text-base">Sígueme en Instagram (@nut.dianeperez)</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-sm text-[#98526a] group-hover:text-[#eac2d3]"></i>
+                </a>
+
+                <!-- TikTok -->
+                <a href="https://tiktok.com" target="_blank" class="flex items-center justify-between p-4 px-6 bg-white hover:bg-[#4b1d30] hover:text-white text-[#4b1d30] rounded-2xl shadow-md border border-[#eac2d3] transition-all group duration-300 transform hover:scale-[1.02]">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-[#eac2d3]/50 group-hover:bg-[#98526a] flex items-center justify-center text-xl transition-colors">
+                            <i class="fa-brands fa-tiktok text-[#4b1d30] group-hover:text-white"></i>
+                        </div>
+                        <span class="font-bold text-base">Tips de Lactancia en TikTok</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-sm text-[#98526a] group-hover:text-[#eac2d3]"></i>
+                </a>
+
+                <!-- Enlace Linktree original -->
+                <a href="https://linktr.ee/nut.dianeperez" target="_blank" class="flex items-center justify-between p-4 px-6 bg-[#4b1d30] hover:bg-[#98526a] text-white rounded-2xl shadow-lg border border-[#98526a] transition-all group duration-300 transform hover:scale-[1.02]">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-[#98526a] flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-tree text-[#eac2d3]"></i>
+                        </div>
+                        <span class="font-bold text-base">Ver Linktree Completo Oficial</span>
+                    </div>
+                    <i class="fa-solid fa-external-link text-sm text-[#eac2d3]"></i>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Sección de Contacto Directo / Formulario Rápido -->
+    <section id="contacto" class="py-24 bg-white relative">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-[#faf5f7] p-8 sm:p-12 rounded-3xl shadow-xl border border-[#eac2d3]">
+                <div class="text-center max-w-xl mx-auto mb-10 space-y-3">
+                    <span class="text-[#98526a] font-bold text-xs uppercase tracking-widest bg-[#eac2d3]/40 px-3 py-1 rounded-full">Reserva tu espacio</span>
+                    <h2 class="font-serif text-3xl text-[#4b1d30] font-bold">Agenda tu Asesoría o Consulta</h2>
+                    <p class="text-sm text-[#210d18]/70">Llena tus datos y me pondré en contacto contigo de inmediato vía WhatsApp para confirmar tu cita.</p>
+                </div>
+
+                <form onsubmit="handleFormSubmit(event)" class="space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-[#4b1d30] uppercase mb-2">Tu Nombre</label>
+                            <input type="text" id="nombre" required placeholder="Ej. Ana Sofía Martínez" class="w-full px-4 py-3.5 rounded-xl bg-white border border-[#eac2d3] text-[#210d18] focus:outline-none focus:ring-2 focus:ring-[#98526a]">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-[#4b1d30] uppercase mb-2">Teléfono / WhatsApp</label>
+                            <input type="tel" id="telefono" required pattern="[0-9]{10}" maxlength="10" placeholder="Ej. 55 1234 5678" class="w-full px-4 py-3.5 rounded-xl bg-white border border-[#eac2d3] text-[#210d18] focus:outline-none focus:ring-2 focus:ring-[#98526a]">
+
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-[#4b1d30] uppercase mb-2">Servicio de Interés</label>
+                            <select id="servicio-select" class="w-full px-4 py-3.5 rounded-xl bg-white border border-[#eac2d3] text-[#210d18] focus:outline-none focus:ring-2 focus:ring-[#98526a]">
+                                <option value="Asesoría en Lactancia Materna">Asesoría en Lactancia Materna</option>
+                                <option value="Banco de Leche en Casa">Banco de Leche en Casa</option>
+                                <option value="Alimentación Complementaria">Alimentación Complementaria</option>
+                                <option value="Nutrición en Embarazo y Lactancia">Nutrición en Embarazo y Lactancia</option>
+                                <option value="Consulta General">Otra consulta / Valoración</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-[#4b1d30] uppercase mb-2">Modalidad</label>
+                            <select id="modalidad" class="w-full px-4 py-3.5 rounded-xl bg-white border border-[#eac2d3] text-[#210d18] focus:outline-none focus:ring-2 focus:ring-[#98526a]">
+                                <option value="En Línea (Videollamada)">En Línea (Videollamada)</option>
+                                <option value="Presencial">Presencial</option>
+                                <option value="Visita a Domicilio">Visita a Domicilio</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-[#4b1d30] uppercase mb-2">Comentarios o dudas específicas</label>
+                        <textarea id="comentarios" rows="3" placeholder="Cuéntame cuántas semanas tiene tu bebé o en qué etapa te encuentras..." class="w-full px-4 py-3.5 rounded-xl bg-white border border-[#eac2d3] text-[#210d18] focus:outline-none focus:ring-2 focus:ring-[#98526a]"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-[#4b1d30] hover:bg-[#98526a] text-white py-4 rounded-xl font-bold shadow-lg transition-all flex items-center justify-center gap-2">
+                        <i class="fa-brands fa-whatsapp text-xl text-[#eac2d3]"></i> Enviar Solicitud por WhatsApp
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. Footer Profesional -->
+    <footer class="bg-[#210d18] text-[#eac2d3] py-16 border-t border-[#4b1d30]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-[#4b1d30]">
+                
+                <div class="md:col-span-5 space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-[#98526a] flex items-center justify-center text-white font-serif font-bold text-lg">
+                            D
+                        </div>
+                        <span class="font-serif font-bold text-xl text-white">Nutrióloga Diane Pérez</span>
+                    </div>
+                    <p class="text-sm text-[#eac2d3]/70 leading-relaxed max-w-sm">
+                        Especialista apasionada en lactancia materna, nutrición pediátrica y acompañamiento materno con base científica y calidez humana.
+                    </p>
+                </div>
+
+                <div class="md:col-span-3 space-y-3">
+                    <h4 class="font-bold text-sm text-white uppercase tracking-wider">Enlaces Rápidos</h4>
+                    <ul class="space-y-2 text-sm text-[#eac2d3]/80">
+                        <li><a href="#inicio" class="hover:text-white transition-colors">Inicio</a></li>
+                        <li><a href="#especialidad" class="hover:text-white transition-colors">Especialidad</a></li>
+                        <li><a href="#servicios" class="hover:text-white transition-colors">Servicios</a></li>
+                        <li><a href="#redes" class="hover:text-white transition-colors">Redes</a></li>
+                    </ul>
+                </div>
+
+                <div class="md:col-span-4 space-y-3">
+                    <h4 class="font-bold text-sm text-white uppercase tracking-wider">Contacto & Ubicación</h4>
+                    <p class="text-sm text-[#eac2d3]/80 flex items-center gap-2">
+                        <i class="fa-solid fa-location-dot text-[#98526a]"></i> Consultas presenciales y en línea
+                    </p>
+                    <p class="text-sm text-[#eac2d3]/80 flex items-center gap-2">
+                        <i class="fa-solid fa-envelope text-[#98526a]"></i> nut.dianeperez@outlook.com
+                    </p>
+                    <div class="flex items-center gap-3 pt-2">
+                        <a href="https://instagram.com" target="_blank" class="w-9 h-9 rounded-full bg-[#4b1d30] hover:bg-[#98526a] flex items-center justify-center text-white transition-colors">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="https://tiktok.com" target="_blank" class="w-9 h-9 rounded-full bg-[#4b1d30] hover:bg-[#98526a] flex items-center justify-center text-white transition-colors">
+                            <i class="fa-brands fa-tiktok"></i>
+                        </a>
+                        <a href="https://wa.me/523321923974" target="_blank" class="w-9 h-9 rounded-full bg-[#4b1d30] hover:bg-[#98526a] flex items-center justify-center text-white transition-colors">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-[#eac2d3]/60">
+                <p>&copy; 2026 Nutrióloga Diane Pérez (Nutrióloga DPH). Todos los derechos reservados.</p>
+                <p class="mt-2 sm:mt-0">Diseñado con amor para la salud materno-infantil.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript para Interactividad -->
+    <script>
+        // Manejo del envío del formulario con simulación de WhatsApp
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const nombre = document.getElementById('nombre').value;
+            const telefono = document.getElementById('telefono').value;
+            const servicio = document.getElementById('servicio-select').value;
+            const modalidad = document.getElementById('modalidad').value;
+            const comentarios = document.getElementById('comentarios').value;
+
+            // Mensaje corregido con cierre de asteriscos para WhatsApp
+            const mensaje = `Hola Nutrióloga Diane, mi nombre es ${nombre}. Deseo agendar una cita para *${servicio}* en modalidad *${modalidad}*. Comentarios: ${comentarios}`;
+            const urlWhatsApp = `https://wa.me/523321923974?text=${encodeURIComponent(mensaje)}`;
+            
+            showToast('Redirigiendo a WhatsApp con tu solicitud...');
+            
+            // Limpia / resetea los campos del formulario
+            event.target.reset();
+
+            setTimeout(() => {
+                window.open(urlWhatsApp, '_blank');
+            }, 800);
+        }
+
+        // Función de Toast Notificación
+        function showToast(message) {
+            const toast = document.getElementById('custom-toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.textContent = message;
+            toast.classList.remove('translate-y-32', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-32', 'opacity-0');
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
